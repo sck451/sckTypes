@@ -1,5 +1,5 @@
 import { Result } from "./Result.ts";
-import { none, type Option, some } from "./Option.ts";
+import { none, type Option, some } from "../Option/Option.ts";
 
 export function err<E>(error: E): Result<never, E> {
   return new Err(error);
