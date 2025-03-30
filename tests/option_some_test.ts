@@ -1,4 +1,4 @@
-import { expect } from "@std/expect";
+import { expect, fn } from "@std/expect";
 import { none, type Option, some } from "../main.ts";
 
 Deno.test("some() is Some and not None", () => {
@@ -48,15 +48,14 @@ Deno.test("some(n).map() transforms n", () => {
 });
 
 Deno.test("some().inspect(n) calls n", () => {
-  let called = false;
-  const callback = () => {
-    called = true;
-  };
+  const testFn = fn(
+    (_val: number) => undefined,
+  );
 
-  const option = some(42).inspect(callback);
+  const option = some(42).inspect(() => testFn());
   expect(option.isSome()).toBe(true);
   expect(option.unwrap()).toBe(42);
-  expect(called).toBe(true);
+  expect(testFn).toHaveBeenCalled();
 });
 
 Deno.test("some(n).mapOr(d, f) returns g(n)", () => {
