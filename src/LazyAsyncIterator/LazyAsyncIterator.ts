@@ -69,6 +69,7 @@ export default class LazyAsyncIterator<T> {
     return undefined;
   }
 
+  // Note this code is currently out of spec. The only return value for the callback function should be AsyncIterable<U>
   flatMap<U>(
     fn: (value: T) => U | Promise<U> | AsyncIterable<U>,
   ): LazyAsyncIterator<U> {
