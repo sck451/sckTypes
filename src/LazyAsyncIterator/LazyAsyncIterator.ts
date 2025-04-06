@@ -70,9 +70,8 @@ export default class LazyAsyncIterator<T> {
     return none();
   }
 
-  // Note this code is currently out of spec. The only return value for the callback function should be AsyncIterable<U>
   flatMap<U>(
-    fn: (value: T) => U | Promise<U> | AsyncIterable<U>,
+    fn: (value: T) => AsyncIterable<U>,
   ): LazyAsyncIterator<U> {
     const previous = this.current;
 
@@ -83,7 +82,7 @@ export default class LazyAsyncIterator<T> {
           if (isAsyncIterable(result)) {
             yield* result;
           } else {
-            yield await result;
+            throw new TypeError(`Expected AsyncIterable, got ${result}`);
           }
         }
       })(),

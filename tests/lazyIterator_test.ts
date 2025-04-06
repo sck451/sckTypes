@@ -43,15 +43,16 @@ Deno.test("find gets the first value that passes a test", async () => {
     val % 2 !== 0
   );
 
-  expect(result).toBe(7);
+  expect(result.isSome()).toBe(true);
+  expect(result.unwrap()).toBe(7);
 });
 
-Deno.test("find returns undefined if nothing passes", async () => {
+Deno.test("find returns none if nothing passes", async () => {
   const result = await LazyAsyncIterator.fromIterable([2, 4, 6]).find((val) =>
     val % 2 !== 0
   );
 
-  expect(result).toBe(undefined);
+  expect(result.isNone()).toBe(true);
 });
 
 Deno.test("flatMap should handle async iterables", async () => {
