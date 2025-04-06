@@ -1,3 +1,4 @@
+import { none, Option, some } from "../../main.ts";
 import isAsyncIterable from "./helpers/isAsyncIterable.ts";
 import iterableToAsync from "./helpers/iteratorToAsync.ts";
 
@@ -60,13 +61,13 @@ export default class LazyAsyncIterator<T> {
 
   async find(
     fn: (value: T) => Promise<boolean> | boolean,
-  ): Promise<T | undefined> {
+  ): Promise<Option<T>> {
     for await (const value of this) {
       if (await fn(value)) {
-        return value;
+        return some(value);
       }
     }
-    return undefined;
+    return none();
   }
 
   // Note this code is currently out of spec. The only return value for the callback function should be AsyncIterable<U>
