@@ -34,7 +34,7 @@ Deno.test("none().unwrapOr(n) returns n", () => {
 });
 
 Deno.test("none().unwrapOrElse(n) returns n()", () => {
-  expect(none<number>().unwrapOrElse(() => 42)).toBe(42);
+  expect(none().unwrapOrElse(() => 42)).toBe(42);
 });
 
 Deno.test("none().map() returns none()", () => {
