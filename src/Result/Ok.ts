@@ -80,6 +80,10 @@ export class Ok<T, E = never> extends ResultBase<T, E> {
     return fn(this.value);
   }
 
+  chain<U, F>(fn: (value: T) => Result<U, F>): Result<U, E | F> {
+    return fn(this.value);
+  }
+
   or<F>(_resultB: Result<T, F>): Ok<T, F> {
     return ok(this.value);
   }

@@ -125,6 +125,16 @@ export abstract class ResultBase<T, E = unknown> {
   abstract andThen<U>(fn: (val: T) => Result<U, E>): Result<U, E>;
 
   /**
+   * Call `fn` if the Result is `Ok`, otherwise return the `Err`.
+   * This allows the chaining of results, gathering all the possible
+   * errors together while passing along a new value.
+   * @param fn A function that receives the current value, and returns
+   * a Result, merging the possible error types together.
+   * @returns A new Result, combining the possible error types.
+   */
+  abstract chain<U, F>(fn: (value: T) => Result<U, F>): Result<U, E | F>;
+
+  /**
    * Return the `Ok` value if present, otherwise return `resultB`.
    * @param resultB A new `Result` to return if `Err`.
    * @returns The current `Ok` or `resultB` if `Err`.

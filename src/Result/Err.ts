@@ -78,6 +78,10 @@ export class Err<T = never, E = unknown> extends ResultBase<T, E> {
     return err(this.error);
   }
 
+  chain<U, F>(_fn: (value: T) => Result<U, F>): Err<never, E> {
+    return err(this.error);
+  }
+
   or<F>(resultB: Result<T, F>): Result<T, F> {
     return resultB;
   }

@@ -123,6 +123,15 @@ Deno.test("err(n).andThen() returns err(n)", () => {
   expect(a.unwrapErr()).toBe("problem");
 });
 
+Deno.test("err().chain() short-circuits", () => {
+  const a: Result<number, string> = err<string>("oops").chain<number, boolean>(
+    () => ok(42)
+  );
+
+  expect(a.isErr()).toBe(true);
+  expect(a.unwrapErr()).toBe("oops");
+});
+
 Deno.test("err().or(n) returns n", () => {
   const a: Result<number, string> = err("problem");
 

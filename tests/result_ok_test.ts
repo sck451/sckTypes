@@ -112,6 +112,20 @@ Deno.test("ok().andThen() returns correct value", () => {
   expect(a.unwrap()).toBe("42");
 });
 
+Deno.test("ok().chain() returns correct value", () => {
+  const a = ok(42).chain((val) => ok(String(val)));
+
+  expect(a.isOk()).toBe(true);
+  expect(a.unwrap()).toBe("42");
+});
+
+Deno.test("ok().chain() returns new Err if function returns Err", () => {
+  const a = ok(42).chain((val) => err<string>(String(val)));
+
+  expect(a.isErr()).toBe(true);
+  expect(a.unwrapErr()).toBe("42");
+});
+
 Deno.test("ok(n).or() returns ok(n)", () => {
   const a = ok(42).or(ok(84));
   expect(a.isOk()).toBe(true);
