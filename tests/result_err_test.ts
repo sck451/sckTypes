@@ -125,7 +125,7 @@ Deno.test("err(n).andThen() returns err(n)", () => {
 
 Deno.test("err().chain() short-circuits", () => {
   const a: Result<number, string> = err<string>("oops").chain<number, boolean>(
-    () => ok(42)
+    () => ok(42),
   );
 
   expect(a.isErr()).toBe(true);
