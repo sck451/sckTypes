@@ -1,11 +1,12 @@
 import { None, none, type Option } from "./Option.ts";
 import { Ok, ok } from "../Result/Result.ts";
+import { OptionBase } from "./OptionBase.ts";
 
 export function some<T>(value: T): Some<T> {
   return new Some(value);
 }
 
-export class Some<T> {
+export class Some<T> implements OptionBase<T> {
   constructor(private readonly value: T) {}
 
   isSome(): this is Some<T> {
@@ -16,7 +17,7 @@ export class Some<T> {
     return fn(this.value);
   }
 
-  isNone(): this is None<T> {
+  isNone(): this is None {
     return false;
   }
 

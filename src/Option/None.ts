@@ -1,11 +1,12 @@
 import { Option, Some, some } from "./Option.ts";
 import { Err, err } from "../Result/Result.ts";
+import { OptionBase } from "./OptionBase.ts";
 
 export function none<T = never>(): None<T> {
   return new None();
 }
 
-export class None<T = never> {
+export class None<T = never> extends OptionBase<T> {
   isSome(): this is Some<T> {
     return false;
   }
@@ -14,7 +15,7 @@ export class None<T = never> {
     return false;
   }
 
-  isNone(): this is None<T> {
+  isNone(): this is None {
     return true;
   }
 
@@ -54,7 +55,7 @@ export class None<T = never> {
     return err(error);
   }
 
-  iter(): Iterable<T> {
+  iter(): IteratorObject<T, unknown, unknown> {
     return Iterator.from([]);
   }
 
