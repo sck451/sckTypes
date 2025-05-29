@@ -1,12 +1,15 @@
 import { Ok, Result } from "./Result.ts";
 import { None, none, Some, some } from "../Option/Option.ts";
+import { ResultBase } from "./ResultBase.ts";
 
 export function err<E>(error: E): Err<never, E> {
   return new Err(error);
 }
 
-export class Err<T = never, E = unknown> {
-  constructor(private readonly error: E) {}
+export class Err<T = never, E = unknown> extends ResultBase<T, E> {
+  constructor(private readonly error: E) {
+    super();
+  }
 
   isOk(): this is Ok<T, E> {
     return false;
@@ -57,8 +60,8 @@ export class Err<T = never, E = unknown> {
     return err(this.error);
   }
 
-  iter(): Iterator<T> {
-    return Iterator.from([]);
+  iter(): IteratorObject<T, unknown, unknown> {
+    return Iterator.from([] as T[]);
   }
 
   unwrap(message: string = `Expected ok() but got ${this}`): never {

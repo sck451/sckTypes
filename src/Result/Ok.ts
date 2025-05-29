@@ -1,12 +1,15 @@
 import { Err, Result } from "./Result.ts";
 import { None, none, Some, some } from "../Option/Option.ts";
+import { ResultBase } from "./ResultBase.ts";
 
 export function ok<T>(value: T): Ok<T> {
   return new Ok(value);
 }
 
-export class Ok<T, E = never> {
-  constructor(private readonly value: T) {}
+export class Ok<T, E = never> extends ResultBase<T, E> {
+  constructor(private readonly value: T) {
+    super();
+  }
 
   isOk(): this is Ok<T, E> {
     return true;
