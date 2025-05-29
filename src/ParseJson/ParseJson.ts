@@ -10,9 +10,9 @@ export function parseJsonInto<T>(
   into: JsonDeserializable<T>,
   json: string,
 ): Result<T, JsonParseError> {
-  let data;
+  let data: unknown;
   try {
-    data = JSON.parse(json) as unknown;
+    data = JSON.parse(json);
   } catch (e) {
     return err(new JsonParseError(String(e)));
   }
