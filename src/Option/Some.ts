@@ -1,7 +1,7 @@
 import { None, none, type Option } from "./Option.ts";
-import { ok, type Result } from "../Result/Result.ts";
+import { Ok, ok } from "../Result/Result.ts";
 
-export function some<T>(value: T): Option<T> {
+export function some<T>(value: T): Some<T> {
   return new Some(value);
 }
 
@@ -36,11 +36,11 @@ export class Some<T> {
     return this.value;
   }
 
-  map<U>(fn: (value: T) => U): Option<U> {
+  map<U>(fn: (value: T) => U): Some<U> {
     return some(fn(this.value));
   }
 
-  inspect(fn: (value: T) => void): Option<T> {
+  inspect(fn: (value: T) => void): Some<T> {
     fn(this.value);
 
     return this;
@@ -54,7 +54,7 @@ export class Some<T> {
     return someFn(this.value);
   }
 
-  okOr<E>(_err: E): Result<T, E> {
+  okOr<E>(_err: E): Ok<T, E> {
     return ok(this.value);
   }
 
@@ -78,11 +78,11 @@ export class Some<T> {
     }
   }
 
-  or(_optionB: Option<T>): Option<T> {
+  or(_optionB: Option<T>): Some<T> {
     return this;
   }
 
-  orElse(_fn: () => Option<T>): Option<T> {
+  orElse(_fn: () => Option<T>): Some<T> {
     return this;
   }
 

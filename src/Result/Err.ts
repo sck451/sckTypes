@@ -1,14 +1,14 @@
-import { Result } from "./Result.ts";
-import { none, type Option, some } from "../Option/Option.ts";
+import { Ok, Result } from "./Result.ts";
+import { None, none, Some, some } from "../Option/Option.ts";
 
-export function err<E>(error: E): Result<never, E> {
+export function err<E>(error: E): Err<never, E> {
   return new Err(error);
 }
 
 export class Err<T = never, E = unknown> {
   constructor(private readonly error: E) {}
 
-  isOk() {
+  isOk(): this is Ok<T, E> {
     return false;
   }
 
@@ -16,7 +16,7 @@ export class Err<T = never, E = unknown> {
     return false;
   }
 
-  isErr() {
+  isErr(): this is Err<T, E> {
     return true;
   }
 
@@ -24,15 +24,15 @@ export class Err<T = never, E = unknown> {
     return fn(this.error);
   }
 
-  ok(): Option<T> {
+  ok(): None<T> {
     return none();
   }
 
-  err(): Option<E> {
+  err(): Some<E> {
     return some(this.error);
   }
 
-  map<U>(_fn: (val: T) => U): Result<U, E> {
+  map<U>(_fn: (val: T) => U): Err<never, E> {
     return err(this.error);
   }
 
@@ -44,24 +44,24 @@ export class Err<T = never, E = unknown> {
     return defaultFn(this.error);
   }
 
-  mapErr<F>(fn: (err: E) => F): Result<T, F> {
+  mapErr<F>(fn: (err: E) => F): Err<never, F> {
     return err(fn(this.error));
   }
 
-  inspect(_fn: (val: T) => void): Result<T, E> {
-    return this;
+  inspect(_fn: (val: T) => void): Err<never, E> {
+    return err(this.error);
   }
 
-  inspectErr(fn: (err: E) => void): Result<T, E> {
+  inspectErr(fn: (err: E) => void): Err<never, E> {
     fn(this.error);
-    return this;
+    return err(this.error);
   }
 
   iter(): Iterator<T> {
     return Iterator.from([]);
   }
 
-  unwrap(message: string = `Expected ok() but got ${this}`): T {
+  unwrap(message: string = `Expected ok() but got ${this}`): never {
     throw new Error(message);
   }
 
@@ -69,11 +69,11 @@ export class Err<T = never, E = unknown> {
     return this.error;
   }
 
-  and<U>(_resultB: Result<U, E>): Result<U, E> {
+  and<U>(_resultB: Result<U, E>): Err<never, E> {
     return err(this.error);
   }
 
-  andThen<U>(_fn: (val: T) => Result<U, E>): Result<U, E> {
+  andThen<U>(_fn: (val: T) => Result<U, E>): Err<never, E> {
     return err(this.error);
   }
 

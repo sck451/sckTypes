@@ -1,14 +1,14 @@
-import { Result } from "./Result.ts";
-import { none, type Option, some } from "../Option/Option.ts";
+import { Err, Result } from "./Result.ts";
+import { None, none, Some, some } from "../Option/Option.ts";
 
-export function ok<T>(value: T): Result<T, never> {
+export function ok<T>(value: T): Ok<T> {
   return new Ok(value);
 }
 
 export class Ok<T, E = never> {
   constructor(private readonly value: T) {}
 
-  isOk() {
+  isOk(): this is Ok<T, E> {
     return true;
   }
 
@@ -16,23 +16,23 @@ export class Ok<T, E = never> {
     return fn(this.value);
   }
 
-  isErr() {
+  isErr(): this is Err<T, E> {
     return false;
   }
 
-  isErrAnd(_fn: (err: E) => boolean): boolean {
+  isErrAnd(_fn: (err: E) => boolean): false {
     return false;
   }
 
-  ok(): Option<T> {
+  ok(): Some<T> {
     return some(this.value);
   }
 
-  err(): Option<E> {
+  err(): None {
     return none();
   }
 
-  map<U>(fn: (val: T) => U): Result<U, E> {
+  map<U>(fn: (val: T) => U): Ok<U, E> {
     return ok(fn(this.value));
   }
 
@@ -44,16 +44,16 @@ export class Ok<T, E = never> {
     return fn(this.value);
   }
 
-  mapErr<F>(_fn: (err: E) => F): Result<T, F> {
+  mapErr<F>(_fn: (err: E) => F): Ok<T, F> {
     return ok(this.value);
   }
 
-  inspect(fn: (val: T) => void): Result<T, E> {
+  inspect(fn: (val: T) => void): Ok<T, E> {
     fn(this.value);
     return this;
   }
 
-  inspectErr(_fn: (err: E) => void): Result<T, E> {
+  inspectErr(_fn: (err: E) => void): Ok<T, E> {
     return this;
   }
 
@@ -65,7 +65,7 @@ export class Ok<T, E = never> {
     return this.value;
   }
 
-  unwrapErr(message: string = `Expected error but got ${this}`): E {
+  unwrapErr(message: string = `Expected error but got ${this}`): never {
     throw new Error(message);
   }
 
@@ -77,11 +77,11 @@ export class Ok<T, E = never> {
     return fn(this.value);
   }
 
-  or<F>(_resultB: Result<T, F>): Result<T, F> {
+  or<F>(_resultB: Result<T, F>): Ok<T, F> {
     return ok(this.value);
   }
 
-  orElse<F>(_fn: (err: E) => Result<T, F>): Result<T, F> {
+  orElse<F>(_fn: (err: E) => Result<T, F>): Ok<T, F> {
     return ok(this.value);
   }
 

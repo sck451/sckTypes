@@ -1,16 +1,16 @@
 import { Option, Some, some } from "./Option.ts";
-import { err, type Result } from "../Result/Result.ts";
+import { Err, err } from "../Result/Result.ts";
 
-export function none<T>(): Option<T> {
+export function none<T = never>(): None<T> {
   return new None();
 }
 
-export class None<T> {
+export class None<T = never> {
   isSome(): this is Some<T> {
     return false;
   }
 
-  isSomeAnd(_fn: (value: T) => boolean): boolean {
+  isSomeAnd(_fn: (value: T) => boolean): false {
     return false;
   }
 
@@ -18,7 +18,7 @@ export class None<T> {
     return true;
   }
 
-  isNoneOr(_fn: (value: T) => boolean): boolean {
+  isNoneOr(_fn: (value: T) => boolean): true {
     return true;
   }
 
@@ -34,11 +34,11 @@ export class None<T> {
     return fn();
   }
 
-  map<U>(_fn: (value: T) => U): Option<U> {
+  map<U>(_fn: (value: T) => U): None<U> {
     return none();
   }
 
-  inspect(_fn: (value: T) => void): Option<T> {
+  inspect(_fn: (value: T) => void): None<T> {
     return this;
   }
 
@@ -50,7 +50,7 @@ export class None<T> {
     return defaultFn();
   }
 
-  okOr<E>(error: E): Result<T, E> {
+  okOr<E>(error: E): Err<T, E> {
     return err(error);
   }
 
@@ -58,15 +58,15 @@ export class None<T> {
     return Iterator.from([]);
   }
 
-  and<U>(_optionB: Option<U>): Option<U> {
+  and<U>(_optionB: Option<U>): None<never> {
     return none();
   }
 
-  andThen<U>(_fn: (value: T) => Option<U>): Option<U> {
+  andThen<U>(_fn: (value: T) => Option<U>): None<never> {
     return none();
   }
 
-  filter(_fn: (value: T) => boolean): Option<T> {
+  filter(_fn: (value: T) => boolean): None<never> {
     return none();
   }
 
@@ -86,11 +86,14 @@ export class None<T> {
     }
   }
 
-  zip<U>(_optionB: Option<U>): Option<[T, U]> {
+  zip<U>(_optionB: Option<U>): None<never> {
     return none();
   }
 
-  zipWith<U, R>(_optionB: Option<U>, _fn: (optA: T, optB: U) => R): Option<R> {
+  zipWith<U, R>(
+    _optionB: Option<U>,
+    _fn: (optA: T, optB: U) => R,
+  ): None<never> {
     return none();
   }
 
