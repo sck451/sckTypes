@@ -1,6 +1,7 @@
 import { Option, Some, some } from "./Option.ts";
 import { Err, err } from "../Result/Result.ts";
 import { OptionBase } from "./OptionBase.ts";
+import { UnwrapError } from "../UnwrapError/UnwrapError.ts";
 
 export function none<T = never>(): None<T> {
   return new None();
@@ -24,7 +25,7 @@ export class None<T = never> extends OptionBase<T> {
   }
 
   unwrap(message: string = "Called Option#unwrap on a None value"): T {
-    throw new Error(message);
+    throw new UnwrapError(message, null);
   }
 
   unwrapOr(defaultValue: T): T {

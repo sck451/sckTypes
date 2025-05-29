@@ -1,5 +1,6 @@
 import { expect } from "@std/expect";
 import { err, ok, type Result } from "../main.ts";
+import { UnwrapError } from "../src/UnwrapError/UnwrapError.ts";
 
 Deno.test("OK result is Ok and not Err", () => {
   const result = ok(42);
@@ -93,7 +94,7 @@ Deno.test("ok(n).unwrap() returns n", () => {
 });
 
 Deno.test("ok().unwrapErr() throws", () => {
-  expect(() => ok(42).unwrapErr()).toThrow();
+  expect(() => ok(42).unwrapErr()).toThrow(UnwrapError);
 });
 
 Deno.test("ok().and(b) returns b", () => {

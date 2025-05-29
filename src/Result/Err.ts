@@ -1,6 +1,7 @@
 import { Ok, Result } from "./Result.ts";
 import { None, none, Some, some } from "../Option/Option.ts";
 import { ResultBase } from "./ResultBase.ts";
+import { UnwrapError } from "../UnwrapError/UnwrapError.ts";
 
 export function err<E>(error: E): Err<never, E> {
   return new Err(error);
@@ -63,7 +64,7 @@ export class Err<T = never, E = unknown> extends ResultBase<T, E> {
   *[Symbol.iterator](): Iterator<T> {}
 
   unwrap(message: string = `Expected ok() but got ${this}`): never {
-    throw new Error(message);
+    throw new UnwrapError(message, this.error);
   }
 
   unwrapErr(_message: string = `Expected error but got ${this}`): E {

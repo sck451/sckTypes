@@ -1,6 +1,7 @@
 import { Err, Result } from "./Result.ts";
 import { None, none, Some, some } from "../Option/Option.ts";
 import { ResultBase } from "./ResultBase.ts";
+import { UnwrapError } from "../UnwrapError/UnwrapError.ts";
 
 export function ok<T>(value: T): Ok<T> {
   return new Ok(value);
@@ -69,7 +70,7 @@ export class Ok<T, E = never> extends ResultBase<T, E> {
   }
 
   unwrapErr(message: string = `Expected error but got ${this}`): never {
-    throw new Error(message);
+    throw new UnwrapError(message, this.value);
   }
 
   and<U>(resultB: Result<U, E>): Result<U, E> {

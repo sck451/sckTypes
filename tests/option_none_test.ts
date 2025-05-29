@@ -1,5 +1,6 @@
 import { expect, fn } from "@std/expect";
 import { none, type Option, some } from "../main.ts";
+import { UnwrapError } from "../src/UnwrapError/UnwrapError.ts";
 
 Deno.test("none() is None and not Some", () => {
   const option = none();
@@ -24,7 +25,7 @@ Deno.test("none().isNoneOr(n) returns true", () => {
 Deno.test("none().unwrap() throws", () => {
   const option: Option<number> = none();
 
-  expect(() => option.unwrap()).toThrow();
+  expect(() => option.unwrap()).toThrow(UnwrapError);
 });
 
 Deno.test("none().unwrapOr(n) returns n", () => {
