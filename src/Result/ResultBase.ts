@@ -92,7 +92,7 @@ export abstract class ResultBase<T, E = unknown> {
    * Get an iterator over the `Ok` value.
    * @returns An iterator yielding the `Ok` value or nothing if `Err`.
    */
-  abstract iter(): IteratorObject<T, unknown, unknown>;
+  abstract [Symbol.iterator](): Iterator<T>;
 
   /**
    * Unwrap the `Ok` value, or throw an error if `Err`.

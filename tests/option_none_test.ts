@@ -73,8 +73,8 @@ Deno.test("none().okOr(n) returns err(n)", () => {
   expect(result.unwrapErr()).toBe("problem");
 });
 
-Deno.test("none().iter() returns an empty iterator", () => {
-  const collected = [...none().iter()];
+Deno.test("iterating over none().iter() yields nothing", () => {
+  const collected = [...none()];
   expect(collected.length).toBe(0);
 });
 

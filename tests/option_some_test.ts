@@ -76,8 +76,8 @@ Deno.test("some(n).okOr() returns ok(n)", () => {
   expect(result.unwrap()).toBe(42);
 });
 
-Deno.test("some(n).iter() returns an iterator over [n]", () => {
-  const collected = [...some(42).iter()];
+Deno.test("iterating over some(n).iter() yields precisely n", () => {
+  const collected = [...some(42)];
   expect(collected.length).toBe(1);
   expect(collected[0]).toBe(42);
 });

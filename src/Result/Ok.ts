@@ -60,8 +60,8 @@ export class Ok<T, E = never> extends ResultBase<T, E> {
     return this;
   }
 
-  iter(): IteratorObject<T, unknown, unknown> {
-    return Iterator.from([this.value]);
+  *[Symbol.iterator](): Iterator<T> {
+    yield this.value;
   }
 
   unwrap(_message: string = `Expected ok() but got ${this}`): T {

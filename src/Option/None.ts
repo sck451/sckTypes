@@ -55,9 +55,7 @@ export class None<T = never> extends OptionBase<T> {
     return err(error);
   }
 
-  iter(): IteratorObject<T, unknown, unknown> {
-    return Iterator.from([]);
-  }
+  *[Symbol.iterator](): Iterator<T> {}
 
   and<U>(_optionB: Option<U>): None<never> {
     return none();

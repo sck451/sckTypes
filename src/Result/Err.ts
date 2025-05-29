@@ -60,9 +60,7 @@ export class Err<T = never, E = unknown> extends ResultBase<T, E> {
     return err(this.error);
   }
 
-  iter(): IteratorObject<T, unknown, unknown> {
-    return Iterator.from([] as T[]);
-  }
+  *[Symbol.iterator](): Iterator<T> {}
 
   unwrap(message: string = `Expected ok() but got ${this}`): never {
     throw new Error(message);

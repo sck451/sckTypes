@@ -59,8 +59,8 @@ export class Some<T> implements OptionBase<T> {
     return ok(this.value);
   }
 
-  iter(): IteratorObject<T, unknown, unknown> {
-    return Iterator.from([this.value]);
+  *[Symbol.iterator](): Iterator<T> {
+    yield this.value;
   }
 
   and<U>(optionB: Option<U>): Option<U> {

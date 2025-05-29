@@ -83,15 +83,15 @@ Deno.test("ok.inspectErr() calls its callback", () => {
   expect(called).toBe(true);
 });
 
-// Deno.test({
-//   name: "ok(n).iter() gives an iterator containing nothing",
-//   fn: () => {
-//     const result = err("problem").iter();
+Deno.test({
+  name: "iterating over err(e) yields nothing",
+  fn: () => {
+    const result = err("problem");
 
-//     const collected = [...result];
-//     expect(collected.length).toBe(0);
-//   },
-// });
+    const collected = [...result];
+    expect(collected.length).toBe(0);
+  },
+});
 
 Deno.test("err().unwrap() throws", () => {
   expect(() => err("problem").unwrap()).toThrow();

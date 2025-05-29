@@ -97,7 +97,7 @@ export abstract class OptionBase<T> {
    * Return an iterator over the {@link Some} value.
    * @returns A JavaScript iterator over 0 or 1 elements.
    */
-  abstract iter(): IteratorObject<T, unknown, unknown>;
+  abstract [Symbol.iterator](): Iterator<T>;
 
   /**
    * Return `optionB` if {@link Some}, otherwise `None`.

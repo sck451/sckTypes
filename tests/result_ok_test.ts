@@ -82,11 +82,11 @@ Deno.test("ok.inspectErr() does not call its callback", () => {
   expect(called).toBe(false);
 });
 
-// Deno.test("ok(n).iter() gives an iterator containing precisely n", () => {
-//   const collected = [...ok(42).iter()];
-//   expect(collected.length).toBe(1);
-//   expect(collected[0]).toBe(42);
-// });
+Deno.test("iterating over ok(n) yields precisely n", () => {
+  const collected = [...ok(42)];
+  expect(collected.length).toBe(1);
+  expect(collected[0]).toBe(42);
+});
 
 Deno.test("ok(n).unwrap() returns n", () => {
   expect(ok(42).unwrap()).toBe(42);
