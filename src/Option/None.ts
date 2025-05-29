@@ -79,11 +79,10 @@ export class None<T = never> {
   }
 
   xor(optionB: Option<T>): Option<T> {
-    if (optionB.isSome()) {
-      return some(optionB.unwrap());
-    } else {
-      return none();
-    }
+    return optionB.match<Option<T>>({
+      Some: (valueB) => some(valueB),
+      None: () => none(),
+    });
   }
 
   zip<U>(_optionB: Option<U>): None<never> {

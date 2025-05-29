@@ -87,27 +87,24 @@ export class Some<T> {
   }
 
   xor(optionB: Option<T>): Option<T> {
-    if (optionB.isNone()) {
-      return some(this.value);
-    } else {
-      return none();
-    }
+    return optionB.match<Option<T>>({
+      Some: () => none(),
+      None: () => some(this.value),
+    });
   }
 
   zip<U>(optionB: Option<U>): Option<[T, U]> {
-    if (optionB.isSome()) {
-      return some([this.value, optionB.unwrap()]);
-    } else {
-      return none();
-    }
+    return optionB.match<Option<[T, U]>>({
+      Some: (valueB) => some([this.value, valueB]),
+      None: () => none(),
+    });
   }
 
   zipWith<U, R>(optionB: Option<U>, fn: (optA: T, optB: U) => R): Option<R> {
-    if (optionB.isSome()) {
-      return some(fn(this.value, optionB.unwrap()));
-    } else {
-      return none();
-    }
+    return optionB.match<Option<R>>({
+      Some: (valueB) => some(fn(this.value, valueB)),
+      None: () => none(),
+    });
   }
 
   match<R>(matcher: {
