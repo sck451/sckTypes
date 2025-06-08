@@ -126,15 +126,15 @@ export default class LazyAsyncIterator<T> {
 
   async reduce<U>(
     fn: (
-      accumulator: U,
+      accumulator: U | T,
       currentValue: T,
       currentIndex: number,
-    ) => Promise<U> | U,
-    initialValue?: U,
-  ): Promise<U> {
+    ) => Promise<U | T> | U | T,
+    initialValue?: U | T,
+  ): Promise<U | T> {
     const iterator = this[Symbol.asyncIterator]();
     let i = 0;
-    let accumulator: U;
+    let accumulator: U | T;
 
     if (arguments.length === 2) {
       accumulator = initialValue!;
@@ -145,7 +145,7 @@ export default class LazyAsyncIterator<T> {
           "Reduce of empty iterator with no initial value",
         );
       }
-      accumulator = first.value as U;
+      accumulator = first.value as U | T;
       i = 1;
     }
 
