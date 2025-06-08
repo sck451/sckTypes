@@ -1,4 +1,4 @@
-import { none, Option, some } from "../../main.ts";
+import { none, type Option, some } from "../../main.ts";
 import isAsyncIterable from "./helpers/isAsyncIterable.ts";
 import iterableToAsync from "./helpers/iteratorToAsync.ts";
 

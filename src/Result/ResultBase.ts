@@ -1,5 +1,5 @@
-import { Option } from "../Option/Option.ts";
-import { Err, Ok, Result } from "./Result.ts";
+import type { Option } from "../Option/Option.ts";
+import type { Err, Ok, Result } from "./Result.ts";
 
 /**
  * An object representing success or failure. A {@link Ok} value signifies

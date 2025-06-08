@@ -1,5 +1,5 @@
-import { Result } from "../Result/Result.ts";
-import { None, type Option, Some } from "./Option.ts";
+import type { Result } from "../Result/Result.ts";
+import type { None, Option, Some } from "./Option.ts";
 
 /**
  * An object representing a value that may or may not be present. A {@link Some}

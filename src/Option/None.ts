@@ -1,5 +1,5 @@
-import { Option, Some, some } from "./Option.ts";
-import { Err, err } from "../Result/Result.ts";
+import { type Option, type Some, some } from "./Option.ts";
+import { type Err, err } from "../Result/Result.ts";
 import { OptionBase } from "./OptionBase.ts";
 import { UnwrapError } from "../UnwrapError/UnwrapError.ts";
 

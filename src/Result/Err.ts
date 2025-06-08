@@ -1,5 +1,5 @@
-import { Ok, Result } from "./Result.ts";
-import { None, none, Some, some } from "../Option/Option.ts";
+import type { Ok, Result } from "./Result.ts";
+import { type None, none, type Some, some } from "../Option/Option.ts";
 import { ResultBase } from "./ResultBase.ts";
 import { UnwrapError } from "../UnwrapError/UnwrapError.ts";
 

@@ -1,6 +1,6 @@
-import { None, none, type Option } from "./Option.ts";
-import { Ok, ok } from "../Result/Result.ts";
-import { OptionBase } from "./OptionBase.ts";
+import { type None, none, type Option } from "./Option.ts";
+import { type Ok, ok } from "../Result/Result.ts";
+import type { OptionBase } from "./OptionBase.ts";
 
 export function some<T>(value: T): Some<T> {
   return new Some(value);

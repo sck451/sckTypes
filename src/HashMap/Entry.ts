@@ -1,5 +1,5 @@
-import { HashMap } from "./HashMap.ts";
-import { type Option } from "../Option/Option.ts";
+import type { HashMap } from "./HashMap.ts";
+import type { Option } from "../Option/Option.ts";
 
 export class Entry<K, T> {
   #map: HashMap<K, T>;
