@@ -7,3 +7,4 @@ export {
   JsonParseError,
   parseJsonInto,
 } from "./src/ParseJson/ParseJson.ts";
+export { HashMap } from "./src/HashMap/HashMap.ts";
