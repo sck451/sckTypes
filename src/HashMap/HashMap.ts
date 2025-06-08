@@ -7,57 +7,44 @@ type Hasher<K> = {
   equals: (key1: K, key2: K) => boolean;
 };
 
-type ObjectWithHashId = {
-  hashId: number;
-};
-
-function isObjectWithHashId(input: unknown): input is ObjectWithHashId {
-  if (typeof input !== "object") {
-    return false;
+function hashString(input: string): number {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = ((hash << 5) - hash + input.charCodeAt(i)) | 0;
   }
-  if (input === null) {
-    return false;
-  }
-  if (!("hashId" in input)) {
-    return false;
-  }
-  if (typeof input.hashId !== "number") {
-    return false;
-  }
-  if (input.hashId < 0) {
-    return false;
-  }
-
-  return true;
+  return hash;
 }
 
 function defaultHasher<K = unknown>(): Hasher<K> {
   return {
     hash: (key) => {
-      if (typeof key === "number") {
-        return key | 0;
-      }
-      if (typeof key === "string") {
-        let hash = 0;
-        for (let i = 0; i < key.length; i++) {
-          hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
-        }
-        return hash;
-      }
-      if (typeof key === "boolean") {
-        return key ? 1 : 0;
-      }
-      if (isObjectWithHashId(key)) {
-        return key.hashId | 0;
-      }
-      throw new Error(`Unsupported key type: ${typeof key}`);
+      return hashString(`${typeof key}: ${key}`);
     },
     equals: (key1, key2) => {
-      if (isObjectWithHashId(key1) && isObjectWithHashId(key2)) {
-        return key1.hashId === key2.hashId;
-      }
+      return Object.is(key1, key2);
+    },
+  };
+}
 
-      return key1 === key2;
+export function getWeakMapHasher(): Hasher<object> {
+  let mapCounter = 0;
+  const map = new WeakMap<object, number>();
+  return {
+    hash: (key) => {
+      let hash = map.get(key);
+      if (hash === undefined) {
+        hash = mapCounter++;
+        map.set(key, hash);
+      }
+      return hash;
+    },
+    equals: (key1, key2) => {
+      const hash1 = map.get(key1);
+      if (hash1 === undefined) {
+        return false;
+      }
+      const hash2 = map.get(key2);
+      return hash1 === hash2;
     },
   };
 }
