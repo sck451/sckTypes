@@ -109,3 +109,43 @@ Deno.test("HashMap.from() builds map from pairs", () => {
   expect(map.size()).toBe(3);
   expect(map.get("b")).toEqual(some(2));
 });
+
+Deno.test("HashMap: entry().orInsert inserts if missing", () => {
+  const map = new HashMap<string, number>();
+  const entry = map.entry("x");
+  entry.orInsert(42);
+
+  expect(map.get("x")).toEqual(some(42));
+});
+
+Deno.test("HashMap: entry().orInsertWith inserts lazily", () => {
+  const map = new HashMap<string, number>();
+  let called = false;
+  const entry = map.entry("x");
+  entry.orInsertWith(() => {
+    called = true;
+    return 99;
+  });
+
+  expect(called).toBe(true);
+  expect(map.get("x")).toEqual(some(99));
+});
+
+Deno.test("HashMap: entry().andModify modifies if present", () => {
+  const map = new HashMap<string, number>();
+  map.set("x", 10);
+  map.entry("x").andModify((v) => v += 5);
+  map.entry("y").andModify((v) => v += 5);
+
+  expect(map.get("x")).toEqual(some(15));
+  expect(map.get("y")).toEqual(none());
+});
+
+Deno.test("HashMap: Entry.remove() removes entry", () => {
+  const map = new HashMap<string, string>();
+  map.set("hello", "world");
+  const entry = map.entry("hello");
+  expect(entry.remove()).toEqual(some("world"));
+  expect(map.has("hello")).toBe(false);
+  expect(map.entry("bonjour").remove()).toEqual(none());
+});
