@@ -56,7 +56,7 @@ Deno.test("find returns none if nothing passes", async () => {
 });
 
 Deno.test("flatMap should handle async iterables", async () => {
-  async function* asyncGen(val: number) {
+  async function* asyncGen(val: number): AsyncIterableIterator<number> {
     yield val;
     yield val * 10;
   }

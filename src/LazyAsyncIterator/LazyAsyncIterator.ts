@@ -5,7 +5,7 @@ import iterableToAsync from "./helpers/iteratorToAsync.ts";
 export default class LazyAsyncIterator<T> {
   constructor(private readonly current: AsyncIterable<T>) {}
 
-  async *[Symbol.asyncIterator]() {
+  async *[Symbol.asyncIterator](): AsyncIterableIterator<T> {
     yield* this.current;
   }
 
@@ -21,7 +21,7 @@ export default class LazyAsyncIterator<T> {
     const previous = this.current;
 
     return new LazyAsyncIterator(
-      (async function* drop() {
+      (async function* drop(): AsyncIterableIterator<T> {
         let i = 0;
         for await (const value of previous) {
           if (i++ >= count) {
@@ -49,7 +49,7 @@ export default class LazyAsyncIterator<T> {
     const previous = this.current;
 
     return new LazyAsyncIterator(
-      (async function* filter() {
+      (async function* filter(): AsyncIterableIterator<T> {
         for await (const value of previous) {
           if (await fn(value)) {
             yield value;
@@ -76,7 +76,7 @@ export default class LazyAsyncIterator<T> {
     const previous = this.current;
 
     return new LazyAsyncIterator(
-      (async function* flatMap() {
+      (async function* flatMap(): AsyncIterableIterator<U> {
         for await (const value of previous) {
           const result = fn(value);
           if (isAsyncIterable(result)) {
@@ -89,7 +89,9 @@ export default class LazyAsyncIterator<T> {
     );
   }
 
-  async forEach(fn: (value: T, index: number) => Promise<void> | void) {
+  async forEach(
+    fn: (value: T, index: number) => Promise<void> | void,
+  ): Promise<void> {
     let i = 0;
     for await (const value of this) {
       await fn(value, i++);
@@ -100,7 +102,7 @@ export default class LazyAsyncIterator<T> {
     const previous = this.current;
 
     return new LazyAsyncIterator(
-      (async function* map() {
+      (async function* map(): AsyncIterableIterator<U> {
         for await (const value of previous) {
           yield await fn(value);
         }
@@ -172,7 +174,7 @@ export default class LazyAsyncIterator<T> {
     const parent = this[Symbol.asyncIterator]();
 
     return new LazyAsyncIterator(
-      (async function* take() {
+      (async function* take(): AsyncIterableIterator<T> {
         for (let i = 0; i < count; i++) {
           const { value, done } = await parent.next();
 

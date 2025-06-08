@@ -4,5 +4,10 @@
   },
   "imports": {
     "@std/expect": "jsr:@std/expect@1"
+  },
+  "lint": {
+    "rules": {
+      "include": ["camelcase", "explicit-function-return-type"]
+    }
   }
 }

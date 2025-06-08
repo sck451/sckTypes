@@ -266,7 +266,7 @@ export class HashMap<K, T> {
     return exists.isSome();
   }
 
-  *drain() {
+  *drain(): IterableIterator<[K, T]> {
     const oldBuckets = [...this.#buckets];
     this.clear();
 
