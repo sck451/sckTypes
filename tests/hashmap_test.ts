@@ -1,5 +1,6 @@
 import { expect } from "@std/expect";
 import { getWeakMapHasher, HashMap, none, some } from "../main.ts";
+import { getHybridHasher } from "../src/HashMap/HashMap.ts";
 
 Deno.test("HashMap basic set/get/has", () => {
   const map = new HashMap<string, number>();
@@ -64,6 +65,21 @@ Deno.test("HashMap with WeakMap hasher handles object keys", () => {
   const key2 = {};
   map.set(key1, "a");
   map.set(key2, "b");
+
+  expect(map.get(key1)).toEqual(some("a"));
+  expect(map.get(key2)).toEqual(some("b"));
+});
+
+Deno.test("HashMap with mixed extensible keys handles object keys", () => {
+  const hasher = getHybridHasher();
+  const map = new HashMap<object, string>(hasher);
+  const key1 = {};
+  const key2 = Object.freeze({});
+  map.set(key1, "a");
+  map.set(key2, "b");
+
+  expect(Object.getOwnPropertySymbols(key1).length).toBe(1);
+  expect(Object.getOwnPropertySymbols(key2).length).toBe(0);
 
   expect(map.get(key1)).toEqual(some("a"));
   expect(map.get(key2)).toEqual(some("b"));

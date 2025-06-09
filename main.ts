@@ -7,4 +7,8 @@ export {
   JsonParseError,
   parseJsonInto,
 } from "./src/ParseJson/ParseJson.ts";
-export { getWeakMapHasher, HashMap } from "./src/HashMap/HashMap.ts";
+export {
+  getHybridHasher,
+  getWeakMapHasher,
+  HashMap,
+} from "./src/HashMap/HashMap.ts";

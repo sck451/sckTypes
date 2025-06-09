@@ -49,6 +49,51 @@ export function getWeakMapHasher(): Hasher<object> {
   };
 }
 
+export function getHybridHasher(): Hasher<object> {
+  let counter = 0;
+  const map = new WeakMap<object, number>();
+  const HASH_TAG = Symbol("HASH_TAG");
+
+  function isHashTagged(input: unknown): input is { [HASH_TAG]: number } {
+    return typeof input === "object" && input !== null &&
+      Object.hasOwn(input, HASH_TAG);
+  }
+
+  return {
+    hash: (key: object) => {
+      if (isHashTagged(key)) {
+        return key[HASH_TAG];
+      }
+      if (Object.isExtensible(key)) {
+        Object.defineProperty(key, HASH_TAG, {
+          value: counter,
+          enumerable: false,
+          writable: false,
+          configurable: false,
+        });
+        return counter++;
+      }
+      if (map.has(key)) {
+        return map.get(key)!;
+      }
+      map.set(key, counter);
+      return counter++;
+    },
+    equals: (key1, key2) => {
+      if (isHashTagged(key1)) {
+        if (isHashTagged(key2)) {
+          return key1[HASH_TAG] === key2[HASH_TAG];
+        }
+        return false;
+      }
+      if (map.has(key1)) {
+        return map.get(key1) === map.get(key2);
+      }
+      return false;
+    },
+  };
+}
+
 export class HashMap<K, T> {
   #buckets: Bucket<K, T>[];
   #count: number = 0;
