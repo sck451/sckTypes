@@ -70,7 +70,7 @@ Deno.test("isRecord - null", () => {
 });
 
 Deno.test("isRecord - array", () => {
-  expect(isRecord([])).toBe(true); // Arrays are typeof 'object', not null
+  expect(isRecord([])).toBe(false); // Arrays are typeof 'object', not null
 });
 
 Deno.test("isRecord - string", () => {
